@@ -1,0 +1,163 @@
+#!/bin/bash
+
+. venv omdt
+
+# Variables
+
+T="Test"
+B="Test sans affichage"
+TN="Test No Init"
+BN="Test No Init sans affichage"
+RT="Lancer le test"
+
+current_directory=`pwd`
+end_of_directory=${current_directory: -5}
+choosenTest=""
+typeTest=""
+
+logo="
+\t<span color=\"#286b6a\">████████ ███████ ███████ ████████</span>
+\t<span color=\"#338887\">        ██        ██              ██                    ██</span>
+\t<span color=\"#389493\">        ██        █████      ███████        ██</span>
+\t<span color=\"#3fa6a5\">        ██        ██                          ██        ██</span>
+\t<span color=\"#45b5b4\">        ██        ██                          ██        ██</span>
+\t<span color=\"#4cc7c6\">        ██        ███████ ███████        ██</span>
+"
+
+# General functions
+
+header_general(){
+	HEADER="$logo
+\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#338887\"><b><i> [$choosenTest]</i></b></span>
+\t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> [$typeTest]</i></b></span>
+"
+}
+
+_quit(){
+    exit 0
+}
+
+parse_file_list(){
+	filename=$1
+	n=1
+	while read line; do
+		line_ending=${line: -6}
+		
+		if [ "$line_ending" != ".robot" ]; then
+			sed -n -i '/.robot/p' $filename
+		fi
+		n=$((n+1))
+	done < $filename
+}
+
+checkTestsList(){
+	ls > ~/bin/easyTests/testsList
+	parse_file_list ~/bin/easyTests/testsList
+}
+
+notification(){
+	zenity --notification\
+    --window-icon="info" \
+    --text="$1"
+}
+
+clear_screen(){	
+	clear 
+}
+
+run_test(){
+	if ([ -n "$choosenTest" ]); then
+		~/bin/easyTests/./currentTest
+	else 
+		echo "Pas de test choisi"
+	fi
+}
+
+test_alias(){
+	if [ -e ~/bin/easytests/config/currentCommits/$HASH_COMMIT/isCommitPending ]; then
+		echo "Commit en cours"
+		notification "Commit en cours 🔏"
+	else
+		if file=`zenity --list  --width=400 --height=1080 --ok-label="✅" --cancel-label="❎" --title="Test  🧪" --text="Tests disponibles" --column="🧫" $(sed ':z;N;$! bz;s/\n/ /g' ~/bin/easyTests/testsList)`;	then
+			titre=$file
+			if [ "$titre" = "" ]; then
+				echo "Pas de test choisi"
+			fi
+		else
+			echo "Annulati	TMP_SCREEN=""on"
+		fi
+		if ([ -n "$titre" ]); then
+			if [ "$1" = "T" ]; then
+				echo "om-tests -c runone -t $titre" > ~/bin/easyTests/currentTest
+				typeTest="Simple"
+				echo "$check_being_in_tests"
+			elif [ "$1" = "B" ]; then
+				echo "xvfb-run -a --server-args=-screen\ 0\ 1680x1050x24 om-tests -c runone -t $titre" > ~/bin/easyTests/currentTest
+				typeTest="Sans affichage"
+			elif [ "$1" = "TN" ]; then
+				echo "om-tests -c runone -t $titre --noinit" > ~/bin/easyTests/currentTest
+				typeTest="Simple No Init"
+			elif [ "$1" = "BN" ]; then
+				echo "xvfb-run -a --server-args=-screen\ 0\ 1680x1050x24 om-tests -c runone -t $titre --noinit" > ~/bin/easyTests/currentTest
+				typeTest="No Init sans affichage"
+			fi
+			choosenTest=$titre
+			echo -e "\nAlias défini pour :\n\n$titre\n$typeTest"
+			notification "$titre\n$typeTest"
+			unset titre
+		else
+			echo "Pas de test choisi"
+		fi
+		2>/dev/null
+	fi
+}
+
+# Dialog
+
+frm_tests(){
+	header_general
+	zenity --list --width=400 --height=465 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
+    	--title="Tests" \
+    	--ok-label="✅" \
+    	--cancel-label="❎" \
+    	--hide-column 1 --column "" --column "" --column "" --column "" --column "" \
+    	1 "  1" "				             $T" "	       " "📺" \
+    	2 "  2" "		   	     $B" "	       " "📻" \
+    	3 "  3" "				     $TN" "		    " "🗃" \
+    	4 "  4" "		    $BN" "	    " "📑" \
+    	0 "" "" "" "" \
+    	5 "  5" "				   $RT" "		    " "🔬" 2>/dev/null;
+}
+
+frm_tests_parser(){
+    case $1 in
+        1) test_alias "T";;
+        2) test_alias "B" ;;
+		3) test_alias "TN" ;;
+		4) test_alias "BN" ;;
+		5) run_test ;;
+        *)
+           quit="1"
+           _quit ;;
+    esac
+}
+
+function_tests(){
+	menuchoice=$(frm_tests)
+	frm_tests_parser ${menuchoice%|*}
+	if [ $quit!="1" ]; then
+		function_tests
+	fi
+}
+
+# Main
+
+if [ $end_of_directory = "tests" ]; then
+	checkTestsList
+	function_tests
+else
+	echo "Vous nêtes pas dans un respertoire de tests"
+	notification "Vous nêtes pas dans un respertoire de tests"
+fi
+
+exit 0
