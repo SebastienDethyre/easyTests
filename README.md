@@ -24,5 +24,6 @@ This script allows, on a graphical interface, to choose a Robot Framework test a
 ```alias test='~/bin/easyTests/testsDialog'```    
 
 > _Remember to source .bashrc or .bash_aliases after each modification, so that they are taken into account before restarting the terminal._
+```source ~/.bashrc && source ~/.bash_aliases```    
 
 Finally, this script will have to be installed in a ~/bin directory (at the root of the user's personal folder), or be modified so that the access paths are respected, especially in the testsDialog file.
