@@ -2,9 +2,9 @@
 > Un outil pour Robot Framework
 
 Ce script permet sur une interface graphique, de choisir un test Robot Framework parmi ceux disponibles et de l'attribuer automatiquement un alias prédéfini (dans .bash_aliases ou bien .bashrc).
-Il faudra donc rajouter cet alias dans un de ces deux fichiers (et ne pas hésiter à créer .bash_aliases s'il n'existe pas pour y insérer l'alias, son existence étant incluse/testée à chaque lecture de .bashrc).
+* Il faudra donc rajouter cet alias dans un de ces deux fichiers (et ne pas hésiter à créer .bash_aliases s'il n'existe pas pour y insérer l'alias, son     existence étant incluse/testée à chaque lecture de .bashrc).
 ```bash alias t='. venv omdt && ~/bin/easyTests/./currentTest'```
-Un alias pour lancer le script pourrait également s'avérer utile.
+* Un alias pour lancer le script pourrait également s'avérer utile.
 ```bash alias test='~/bin/easyTests/testsDialog'```
 
 Enfin, ce script devra être installé dans un répertoire ~/bin (à la racine dossier personnel de l'utilisateur), ou être modifié afin que les chemins d'accès soient respectés, en particulier dans le fichier testsDialog.
