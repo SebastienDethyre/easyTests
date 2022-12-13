@@ -27,6 +27,8 @@ De même pour le script de désinstallation :
 
 <br>
 
+<br>
+
 # easyTests
 > A Robot Framework tool
 
