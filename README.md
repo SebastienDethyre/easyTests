@@ -18,7 +18,7 @@ Pensez à donner le droit d'éxecution au script pour le lancer :
 ```chmod 755 install && ./install```
 
 De même pour le script de désinstallation :
-```chmod 755 uninstall && ./unistall```
+```chmod 755 uninstall && ./uninstall```
 
 <br>
 
