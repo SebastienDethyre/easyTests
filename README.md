@@ -1,6 +1,9 @@
 # easyTests
 > Un outil pour Robot Framework
 
+**Zenity est nécessaire à l'exécution de ce script.**
+```sudo apt-get install zenity```
+
 Ce script permet sur une interface graphique, de choisir un test Robot Framework parmi ceux disponibles et de l'attribuer automatiquement un alias prédéfini (dans .bash_aliases ou bien .bashrc).
 * Il faudra donc rajouter cet alias dans un de ces deux fichiers (et ne pas hésiter à créer ~/.bash_aliases s'il n'existe pas pour y insérer l'alias, son     existence étant testée/incluse à chaque lecture de .bashrc).
 ```alias t='. venv omdt && ~/bin/easyTests/./currentTest'```
@@ -31,6 +34,9 @@ De même pour le script de désinstallation :
 
 # easyTests
 > A Robot Framework tool
+
+**Zenity is required to run this script**
+```sudo apt-get install zenity```
 
 This script allows, on a graphical interface, to choose a Robot Framework test among those available and to automatically assign it a predefined alias (in .bash_aliases or .bashrc).
 * You will have to add this alias in one of these two files (and don't hesitate to create ~/.bash_aliases if it doesn't exist to insert the alias, its     existence being tested/included at each reading of .bashrc).
