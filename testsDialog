@@ -84,7 +84,7 @@ test_alias(){
 				echo "Pas de test choisi"
 			fi
 		else
-			echo "Annulati	TMP_SCREEN=""on"
+			echo "Annulation"
 		fi
 		if ([ -n "$titre" ]); then
 			if [ "$1" = "T" ]; then
