@@ -1,0 +1,9 @@
+#!/bin/bash
+
+rm -rf ~/bin/easyTests
+
+sed -i '/Robot Framework/d' ~/.bash_aliases
+sed -i '/testsDialog/d' ~/.bash_aliases
+sed -i '/currentTest/d' ~/.bash_aliases
+
+exec bash

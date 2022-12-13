@@ -1,0 +1,27 @@
+#!/bin/bash
+
+if [ -d ~/bin ];
+then
+    echo "~/bin existe déjà."    
+else
+	mkdir ~/bin
+fi
+
+mkdir ~/bin/easyTests
+cp currentTest ~/bin/easyTests && chmod 755 ~/bin/easyTests/currentTest
+cp testsDialog ~/bin/easyTests && chmod 755 ~/bin/easyTests/testsDialog
+cp testsList ~/bin/easyTests
+
+if [ -f ~/.bash_aliases ];
+then
+    echo "~/.bash_aliases existe déjà."    
+else
+	touch ~/.bash_aliases
+fi
+echo -e  "\nCréation des alias :\n\n* 'test' pour choisir le test et\n* 't' pour lancer le test sélectionné" 
+
+echo -e "\n# Tests Robot Framework" >> ~/.bash_aliases
+echo -e "alias test=~/bin/easyTests/./testsDialog" >> ~/.bash_aliases
+echo -e "alias t=~/bin/easyTests/./currentTest" >> ~/.bash_aliases
+source ~/.bash_aliases
+exec bash
