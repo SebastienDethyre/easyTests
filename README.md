@@ -15,7 +15,7 @@ Enfin, ce script devra être installé dans un répertoire ~/bin (à la racine d
 ## Installation complète via le script install
 > N.B. : L'installation va générer 2 alias (paramétrables dans le fichier .bash_aliases, lui-même créé s'il n'existait pas) :
 > * test : pour ouvrir la boite de dialogue et choisir le test à effectuer
-> * t : pour lancer le test choisi    
+> * t : pour lancer le test choisi
 > A la fermeture du terminal, une confirmation sera demandée, car un processus est toujours actif. Fermez la fenêtre sans vous en soucier : il ne réapparaîtra pas (Ce processus provient de la commande *exec bash* lancée lors du script d'installation, pour remplacer le *source ~/.bash_aliases* non reconnue par un script)
 
 Pensez à donner le droit d'éxecution au script pour le lancer :
@@ -43,7 +43,7 @@ Finally, this script will have to be installed in a ~/bin directory (at the root
 ## Complete install with script
 > N.B. : The installation will generate 2 aliases (which can be set in the .bash_aliases file, which was created if it did not exist):
 > * test : to open the dialog box and choose the test to run
-> * t : to launch the chosen test    
+> * t : to launch the chosen test
 > When the terminal is closed, a confirmation will be requested, as a process is still active. Close the window without worrying about it : it will not reappear (this process comes from the *exec bash* command launched during the installation script, to replace the *source ~/.bash_aliases* not recognized by a script).
 
 Don't forget to allow the install script execution :
