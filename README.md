@@ -12,6 +12,14 @@ Ce script permet sur une interface graphique, de choisir un test Robot Framework
 
 Enfin, ce script devra être installé dans un répertoire ~/bin (à la racine dossier personnel de l'utilisateur), ou être modifié afin que les chemins d'accès soient respectés, en particulier dans le fichier testsDialog.
 
+# Installation via le script install*
+
+Pensez à donner le droit d'éxecution au script pour le lancer :
+```chmod 755 install && ./install```
+
+De même pour le script de désinstallation :
+```chmod 755 uninstall && ./unistall```
+
 <br>
 
 # easyTests
@@ -27,3 +35,11 @@ This script allows, on a graphical interface, to choose a Robot Framework test a
 ```source ~/.bashrc && source ~/.bash_aliases```    
 
 Finally, this script will have to be installed in a ~/bin directory (at the root of the user's personal folder), or be modified so that the access paths are respected, especially in the testsDialog file.
+
+# Installation with the install script
+
+Don't forget to allow the install script execution :
+```chmod 755 install && ./install```
+
+Same for the uninstall :
+```chmod 755 uninstall && ./unistall```
