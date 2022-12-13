@@ -36,7 +36,7 @@ This script allows, on a graphical interface, to choose a Robot Framework test a
 
 Finally, this script will have to be installed in a ~/bin directory (at the root of the user's personal folder), or be modified so that the access paths are respected, especially in the testsDialog file.
 
-## Installation with the install script
+## Install script
 
 Don't forget to allow the install script execution :
 ```chmod 755 install && ./install```
