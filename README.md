@@ -12,7 +12,7 @@ Ce script permet sur une interface graphique, de choisir un test Robot Framework
 
 Enfin, ce script devra être installé dans un répertoire ~/bin (à la racine dossier personnel de l'utilisateur), ou être modifié afin que les chemins d'accès soient respectés, en particulier dans le fichier testsDialog.
 
-## Installation complète via le script install
+## Installation complète via le script *install*
 > N.B. : L'installation va générer 2 alias (paramétrables dans le fichier .bash_aliases, lui-même créé s'il n'existait pas) :
 > * test : pour ouvrir la boite de dialogue et choisir le test à effectuer
 > * t : pour lancer le test choisi
