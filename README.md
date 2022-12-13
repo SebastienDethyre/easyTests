@@ -17,7 +17,7 @@ Enfin, ce script devra être installé dans un répertoire ~/bin (à la racine d
 > * test : pour ouvrir la boite de dialogue et choisir le test à effectuer
 > * t : pour lancer le test choisi
 
-A la fermeture du terminal, une confirmation sera demandée, car un processus est toujours actif. Fermez la fenêtre sans vous en soucier : il ne réapparaîtra pas (Ce processus provient de la commande *exec bash* lancée lors du script d'installation, pour remplacer le *source ~/.bash_aliases* non reconnue par un script)
+A la fermeture du terminal, une confirmation sera demandée, car un processus est toujours actif. Fermez la fenêtre sans vous en soucier : il ne réapparaîtra pas (Ce processus provient de la commande *exec bash* lancée lors du script d'installation, pour remplacer le *source ~/.bash_aliases* non reconnue par un script).
 
 Pensez à donner le droit d'éxecution au script pour le lancer :
 ```chmod 755 install && ./install```
