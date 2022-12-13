@@ -13,7 +13,6 @@ Ce script permet sur une interface graphique, de choisir un test Robot Framework
 Enfin, ce script devra être installé dans un répertoire ~/bin (à la racine dossier personnel de l'utilisateur), ou être modifié afin que les chemins d'accès soient respectés, en particulier dans le fichier testsDialog.
 
 ## Installation complète via le script install
-
 > N.B.: L'installation va générer 2 alias (paramétrables dans le fichier .bash_aliases, lui-même créé s'il n'existait pas) :
 > * test : pour ouvrir la boite de dialogue et choisir le test à effectuer
 > * t : pour lancer le test choisi
@@ -41,6 +40,9 @@ This script allows, on a graphical interface, to choose a Robot Framework test a
 Finally, this script will have to be installed in a ~/bin directory (at the root of the user's personal folder), or be modified so that the access paths are respected, especially in the testsDialog file.
 
 ## Complete install with script
+> N.B.: The installation will generate 2 aliases (which can be set in the .bash_aliases file, which was created if it did not exist):
+> * test : to open the dialog box and choose the test to run
+> * t : to launch the chosen test
 
 Don't forget to allow the install script execution :
 ```chmod 755 install && ./install```
