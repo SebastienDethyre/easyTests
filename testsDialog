@@ -8,13 +8,17 @@ T="Test"
 B="Test sans affichage"
 TN="Test No Init"
 BN="Test No Init sans affichage"
+
 RT="Lancer le test"
+AC="Fermeture Auto"
 
 current_directory=`pwd`
 end_of_directory=${current_directory: -5}
 choosen_test=""
 type_test=""
 
+check_auto_close=$(cat ~/bin/easyTests/config)
+echo $check_auto_close
 check_current_test(){
 	filename=~/bin/easyTests/currentTest
 	n=1
@@ -56,6 +60,7 @@ header_general(){
 	HEADER="$logo
 \t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#338887\"><b><i> $choosen_test</i></b></span>
 \t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> $type_test</i></b></span>
+\t\t\t\t\t\t\t\t\t\t<span color=\"grey\">$check_auto_close</span>
 "
 }
 
@@ -99,6 +104,16 @@ run_test(){
 	fi
 }
 
+auto_close(){
+	if [ "$check_auto_close" = "auto-close" ]; then
+		echo "" > ~/bin/easyTests/config
+		check_auto_close=$(cat ~/bin/easyTests/config)
+	else
+		echo "auto-close" > ~/bin/easyTests/config
+		check_auto_close=$(cat ~/bin/easyTests/config)
+	fi
+}
+
 test_alias(){
 	if [ -e ~/bin/easytests/config/currentCommits/$HASH_COMMIT/isCommitPending ]; then
 		echo "Commit en cours"
@@ -131,6 +146,9 @@ test_alias(){
 			echo -e "\nAlias défini pour :\n\n$titre\n$type_test"
 			notification "$titre\n$type_test"
 			unset titre
+			if [ "$check_auto_close" = "auto-close" ]; then
+				_quit
+			fi
 		else
 			echo "Pas de test choisi"
 		fi
@@ -142,7 +160,7 @@ test_alias(){
 
 frm_tests(){
 	header_general
-	zenity --list --width=400 --height=465 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
+	zenity --list --width=400 --height=505 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
     	--title="Tests" \
     	--ok-label="✅" \
     	--cancel-label="❎" \
@@ -152,7 +170,8 @@ frm_tests(){
     	3 "  3" "				     $TN" "		    " "🗃" \
     	4 "  4" "		    $BN" "	    " "📑" \
     	0 "" "" "" "" \
-    	5 "  5" "				   $RT" "		    " "🔬" 2>/dev/null;
+    	5 "  5" "				   $RT" "		    " "🔬" \
+    	6 "  6" "		    	        $AC" "	    " "❎" 2>/dev/null;
 }
 
 frm_tests_parser(){
@@ -162,6 +181,7 @@ frm_tests_parser(){
 		3) test_alias "TN" ;;
 		4) test_alias "BN" ;;
 		5) run_test ;;
+		6) auto_close ;;
         *)
            quit="1"
            _quit ;;
