@@ -15,6 +15,31 @@ end_of_directory=${current_directory: -5}
 choosenTest=""
 typeTest=""
 
+checkCurrentTest(){
+	filename=~/bin/easyTests/currentTest
+	n=1
+
+	
+	while read line; do
+		line_ending=${line: -8}
+		line_begin=${line:0:21}
+		if [ "$line_begin" = "om-tests -c runone -t" ]; then
+			choosenTest=`echo $line | cut -c 23-`
+			typeTest="Simple"
+		else
+			choosenTest=`echo $line | cut -c 72-`
+			typeTest="Sans affichage"
+		fi
+		if [ "$line_ending" = "--noinit" ]; then
+			no_init="No Init"
+			choosenTest=${choosenTest::-9}
+			typeTest="$typeTest $no_init" 
+		fi
+		n=$((n+1))
+	done < $filename
+}
+checkCurrentTest
+
 logo="
 \t<span color=\"#286b6a\">████████ ███████ ███████ ████████</span>
 \t<span color=\"#338887\">        ██        ██              ██                    ██</span>
@@ -28,8 +53,8 @@ logo="
 
 header_general(){
 	HEADER="$logo
-\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#338887\"><b><i> [$choosenTest]</i></b></span>
-\t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> [$typeTest]</i></b></span>
+\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#338887\"><b><i> $choosenTest</i></b></span>
+\t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> $typeTest</i></b></span>
 "
 }
 
@@ -99,7 +124,7 @@ test_alias(){
 				typeTest="Simple No Init"
 			elif [ "$1" = "BN" ]; then
 				echo "xvfb-run -a --server-args=-screen\ 0\ 1680x1050x24 om-tests -c runone -t $titre --noinit" > ~/bin/easyTests/currentTest
-				typeTest="No Init sans affichage"
+				typeTest="Sans affichage No Init"
 			fi
 			choosenTest=$titre
 			echo -e "\nAlias défini pour :\n\n$titre\n$typeTest"
