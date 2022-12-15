@@ -18,8 +18,6 @@ typeTest=""
 checkCurrentTest(){
 	filename=~/bin/easyTests/currentTest
 	n=1
-
-	
 	while read line; do
 		line_ending=${line: -8}
 		line_begin=${line:0:21}
