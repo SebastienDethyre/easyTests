@@ -10,6 +10,7 @@ fi
 mkdir ~/bin/easyTests
 cp currentTest ~/bin/easyTests && chmod 755 ~/bin/easyTests/currentTest
 cp testsDialog ~/bin/easyTests && chmod 755 ~/bin/easyTests/testsDialog
+cp config ~/bin/easyTests
 cp testsList ~/bin/easyTests
 
 if [ -f ~/.bash_aliases ];
