@@ -18,7 +18,7 @@ choosen_test=""
 type_test=""
 
 check_auto_close=$(cat ~/bin/easyTests/config)
-echo $check_auto_close
+
 check_current_test(){
 	filename=~/bin/easyTests/currentTest
 	n=1
