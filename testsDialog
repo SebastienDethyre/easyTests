@@ -12,31 +12,34 @@ RT="Lancer le test"
 
 current_directory=`pwd`
 end_of_directory=${current_directory: -5}
-choosenTest=""
-typeTest=""
+choosen_test=""
+type_test=""
 
-checkCurrentTest(){
+check_current_test(){
 	filename=~/bin/easyTests/currentTest
 	n=1
+
+	
 	while read line; do
 		line_ending=${line: -8}
 		line_begin=${line:0:21}
 		if [ "$line_begin" = "om-tests -c runone -t" ]; then
-			choosenTest=`echo $line | cut -c 23-`
-			typeTest="Simple"
+			choosen_test=`echo $line | cut -c 23-`
+			type_test="Simple"
 		else
-			choosenTest=`echo $line | cut -c 72-`
-			typeTest="Sans affichage"
+			choosen_test=`echo $line | cut -c 72-`
+			type_test="Sans affichage"
 		fi
 		if [ "$line_ending" = "--noinit" ]; then
 			no_init="No Init"
-			choosenTest=${choosenTest::-9}
-			typeTest="$typeTest $no_init" 
+			choosen_test=${choosen_test::-9}
+			type_test="$type_test $no_init" 
 		fi
 		n=$((n+1))
 	done < $filename
 }
-checkCurrentTest
+
+check_current_test
 
 logo="
 \t<span color=\"#286b6a\">████████ ███████ ███████ ████████</span>
@@ -51,8 +54,8 @@ logo="
 
 header_general(){
 	HEADER="$logo
-\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#338887\"><b><i> $choosenTest</i></b></span>
-\t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> $typeTest</i></b></span>
+\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#338887\"><b><i> $choosen_test</i></b></span>
+\t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> $type_test</i></b></span>
 "
 }
 
@@ -73,7 +76,7 @@ parse_file_list(){
 	done < $filename
 }
 
-checkTestsList(){
+check_tests_list(){
 	ls > ~/bin/easyTests/testsList
 	parse_file_list ~/bin/easyTests/testsList
 }
@@ -89,7 +92,7 @@ clear_screen(){
 }
 
 run_test(){
-	if ([ -n "$choosenTest" ]); then
+	if ([ -n "$choosen_test" ]); then
 		~/bin/easyTests/./currentTest
 	else 
 		echo "Pas de test choisi"
@@ -112,21 +115,21 @@ test_alias(){
 		if ([ -n "$titre" ]); then
 			if [ "$1" = "T" ]; then
 				echo "om-tests -c runone -t $titre" > ~/bin/easyTests/currentTest
-				typeTest="Simple"
+				type_test="Simple"
 				echo "$check_being_in_tests"
 			elif [ "$1" = "B" ]; then
 				echo "xvfb-run -a --server-args=-screen\ 0\ 1680x1050x24 om-tests -c runone -t $titre" > ~/bin/easyTests/currentTest
-				typeTest="Sans affichage"
+				type_test="Sans affichage"
 			elif [ "$1" = "TN" ]; then
 				echo "om-tests -c runone -t $titre --noinit" > ~/bin/easyTests/currentTest
-				typeTest="Simple No Init"
+				type_test="Simple No Init"
 			elif [ "$1" = "BN" ]; then
 				echo "xvfb-run -a --server-args=-screen\ 0\ 1680x1050x24 om-tests -c runone -t $titre --noinit" > ~/bin/easyTests/currentTest
-				typeTest="Sans affichage No Init"
+				type_test="Sans affichage No Init"
 			fi
-			choosenTest=$titre
-			echo -e "\nAlias défini pour :\n\n$titre\n$typeTest"
-			notification "$titre\n$typeTest"
+			choosen_test=$titre
+			echo -e "\nAlias défini pour :\n\n$titre\n$type_test"
+			notification "$titre\n$type_test"
 			unset titre
 		else
 			echo "Pas de test choisi"
@@ -176,7 +179,7 @@ function_tests(){
 # Main
 
 if [ $end_of_directory = "tests" ]; then
-	checkTestsList
+	check_tests_list
 	function_tests
 else
 	echo "Vous nêtes pas dans un respertoire de tests"
