@@ -14,9 +14,6 @@ AC="Fermeture Auto"
 
 current_directory=`pwd`
 end_of_directory=${current_directory: -5}
-choosen_test=""
-type_test=""
-
 check_auto_close=$(cat ~/bin/easyTests/config)
 
 check_current_test(){
@@ -50,15 +47,16 @@ logo="
 \t<span color=\"#389493\">        ██        █████      ███████        ██</span>
 \t<span color=\"#3fa6a5\">        ██        ██                          ██        ██</span>
 \t<span color=\"#45b5b4\">        ██        ██                          ██        ██</span>
-\t<span color=\"#4cc7c6\">        ██        ███████ ███████        ██</span>
+\t<span color=\"#4cc7c6\">        ██        ███████ ███████        ██</span>\n
 "
 
 # General functions
 
 header_general(){
 	choosen_test_short=${choosen_test:: -6}
+	choosen_test_short=`echo "$choosen_test_short" | sed -r 's/_/ /g'`
 	HEADER="$logo
-\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#338887\"><b><i> $choosen_test_short</i></b></span>
+\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#3fa6a5\"><big><b><i> $choosen_test_short</i></b></big></span>
 \t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> $type_test</i></b></span>
 \t\t\t\t\t\t\t\t\t\t<span color=\"grey\">$check_auto_close</span>
 "
@@ -81,8 +79,8 @@ parse_file_list(){
 	done < $filename
 	p=1
 	while read line; do
-			sed -i -e 's/.robot//g' $filename
-
+		sed -i -e 's/.robot//g' $filename
+		tests_count=$((tests_count+1))
 		p=$((p+1))
 	done < $filename
 }
@@ -125,7 +123,7 @@ test_alias(){
 		echo "Commit en cours"
 		notification "Commit en cours 🔏"
 	else
-		if file=`zenity --list  --width=400 --height=1080 --ok-label="✅" --cancel-label="❎" --title="Test  🧪" --text="Tests disponibles" --column="🧫" $(sed ':z;N;$! bz;s/\n/ /g' ~/bin/easyTests/testsList)`;	then
+		if file=`zenity --list  --width=400 --height=1080 --ok-label="✅" --cancel-label="❎" --title="Tests  🧪" --text="     $tests_count tests disponibles" --column="🧫" $(sed ':z;N;$! bz;s/\n/ /g' ~/bin/easyTests/testsList)`;	then
 			titre=$file
 			if [ "$titre" = "" ]; then
 				echo "Pas de test choisi"
@@ -148,7 +146,7 @@ test_alias(){
 				echo "xvfb-run -a --server-args=-screen\ 0\ 1680x1050x24 om-tests -c runone -t $titre.robot --noinit" > ~/bin/easyTests/currentTest
 				type_test="Sans affichage No Init"
 			fi
-			choosen_test=$titre
+			choosen_test="$titre.robot"
 			echo -e "\nAlias défini pour :\n\n$titre\n$type_test"
 			notification "$titre\n$type_test"
 			unset titre
@@ -166,7 +164,7 @@ test_alias(){
 
 frm_tests(){
 	header_general
-	zenity --list --width=400 --height=505 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
+	zenity --list --width=400 --height=520 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
     	--title="Tests" \
     	--ok-label="✅" \
     	--cancel-label="❎" \
