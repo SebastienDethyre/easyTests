@@ -21,9 +21,8 @@ check_auto_close=$(cat ~/bin/easyTests/config)
 
 check_current_test(){
 	filename=~/bin/easyTests/currentTest
-	n=1
 
-	
+	n=1
 	while read line; do
 		line_ending=${line: -8}
 		line_begin=${line:0:21}
@@ -57,8 +56,9 @@ logo="
 # General functions
 
 header_general(){
+	choosen_test_short=${choosen_test:: -6}
 	HEADER="$logo
-\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#338887\"><b><i> $choosen_test</i></b></span>
+\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#338887\"><b><i> $choosen_test_short</i></b></span>
 \t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> $type_test</i></b></span>
 \t\t\t\t\t\t\t\t\t\t<span color=\"grey\">$check_auto_close</span>
 "
@@ -79,9 +79,15 @@ parse_file_list(){
 		fi
 		n=$((n+1))
 	done < $filename
+	p=1
+	while read line; do
+			sed -i -e 's/.robot//g' $filename
+
+		p=$((p+1))
+	done < $filename
 }
 
-check_tests_list(){
+fill_tests_list(){
 	ls > ~/bin/easyTests/testsList
 	parse_file_list ~/bin/easyTests/testsList
 }
@@ -129,17 +135,17 @@ test_alias(){
 		fi
 		if ([ -n "$titre" ]); then
 			if [ "$1" = "T" ]; then
-				echo "om-tests -c runone -t $titre" > ~/bin/easyTests/currentTest
+				echo "om-tests -c runone -t $titre.robot" > ~/bin/easyTests/currentTest
 				type_test="Simple"
 				echo "$check_being_in_tests"
 			elif [ "$1" = "B" ]; then
-				echo "xvfb-run -a --server-args=-screen\ 0\ 1680x1050x24 om-tests -c runone -t $titre" > ~/bin/easyTests/currentTest
+				echo "xvfb-run -a --server-args=-screen\ 0\ 1680x1050x24 om-tests -c runone -t $titre.robot" > ~/bin/easyTests/currentTest
 				type_test="Sans affichage"
 			elif [ "$1" = "TN" ]; then
-				echo "om-tests -c runone -t $titre --noinit" > ~/bin/easyTests/currentTest
+				echo "om-tests -c runone -t $titre.robot --noinit" > ~/bin/easyTests/currentTest
 				type_test="Simple No Init"
 			elif [ "$1" = "BN" ]; then
-				echo "xvfb-run -a --server-args=-screen\ 0\ 1680x1050x24 om-tests -c runone -t $titre --noinit" > ~/bin/easyTests/currentTest
+				echo "xvfb-run -a --server-args=-screen\ 0\ 1680x1050x24 om-tests -c runone -t $titre.robot --noinit" > ~/bin/easyTests/currentTest
 				type_test="Sans affichage No Init"
 			fi
 			choosen_test=$titre
@@ -165,13 +171,13 @@ frm_tests(){
     	--ok-label="✅" \
     	--cancel-label="❎" \
     	--hide-column 1 --column "" --column "" --column "" --column "" --column "" \
-    	1 "  1" "				             $T" "	       " "📺" \
-    	2 "  2" "		   	     $B" "	       " "📻" \
-    	3 "  3" "				     $TN" "		    " "🗃" \
-    	4 "  4" "		    $BN" "	    " "📑" \
+    	1 "  1" "				             $T" "	           " "📺" \
+    	2 "  2" "		   	     $B" "	           " "📻" \
+    	3 "  3" "				     $TN" "		        " "🗃" \
+    	4 "  4" "		    $BN" "	        " "📑" \
     	0 "" "" "" "" \
-    	5 "  5" "				   $RT" "		    " "🔬" \
-    	6 "  6" "		    	        $AC" "	    " "❎" 2>/dev/null;
+    	5 "  5" "				   $RT" "		        " "🔬" \
+    	6 "  6" "		    	        $AC" "	        " "❎" 2>/dev/null;
 }
 
 frm_tests_parser(){
@@ -199,7 +205,7 @@ function_tests(){
 # Main
 
 if [ $end_of_directory = "tests" ]; then
-	check_tests_list
+	fill_tests_list
 	function_tests
 else
 	echo "Vous nêtes pas dans un respertoire de tests"
