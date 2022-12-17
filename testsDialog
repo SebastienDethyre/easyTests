@@ -54,7 +54,10 @@ logo="
 
 header_general(){
 	choosen_test_short=${choosen_test:: -6}
-	choosen_test_short=`echo "$choosen_test_short" | sed -r 's/_/ /g'`
+	choosen_test_short=`echo "$choosen_test_short" | sed -r 's/_/ /g' | fold -b$((30)) -s`
+	COLUMNS=40
+	choosen_test_short=`echo "$choosen_test_short" | sed -r 's/_/ /g' | fold -s -w $(( $COLUMNS - 4 )) | sed -e '2,$s/^/\t\t\t  /g'`
+	
 	HEADER="$logo
 \t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#3fa6a5\"><big><b><i> $choosen_test_short</i></b></big></span>
 \t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> $type_test</i></b></span>
@@ -164,7 +167,7 @@ test_alias(){
 
 frm_tests(){
 	header_general
-	zenity --list --width=400 --height=520 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
+	zenity --list --width=400 --height=540 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
     	--title="Tests" \
     	--ok-label="✅" \
     	--cancel-label="❎" \
