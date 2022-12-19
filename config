@@ -1,1 +1,3 @@
-auto-close
+# Easy tests configuration
+auto-close: true
+notifications-show: false
