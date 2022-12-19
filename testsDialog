@@ -215,7 +215,7 @@ test_alias(){
 
 frm_tests(){
 	header_general
-	zenity --list --width=400 --height=580 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
+	zenity --list --width=400 --height=585 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
     	--title="Tests" \
     	--ok-label="✅" \
     	--cancel-label="❎" \
