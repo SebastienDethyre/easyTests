@@ -19,11 +19,7 @@ sed -i '1s/.*/# Easy tests configuration/' ~/bin/easyTests/config
 check_auto_close=$(sed -n '2p' ~/bin/easyTests/config)
 check_notifications_show=$(sed -n '3p' ~/bin/easyTests/config)
 
-auto_close_image="♻"
-auto_close_image="🌀"
-auto_close_image="🔜"
 auto_close_image="🔄"
-
 notifications_show_image="🔔"
 
 check_current_test(){
