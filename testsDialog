@@ -11,10 +11,20 @@ BN="Test No Init sans affichage"
 
 RT="Lancer le test"
 AC="Fermeture Auto"
+NO="Notifications"
 
 current_directory=`pwd`
 end_of_directory=${current_directory: -5}
-check_auto_close=$(cat ~/bin/easyTests/config)
+sed -i '1s/.*/# Easy tests configuration/' ~/bin/easyTests/config
+check_auto_close=$(sed -n '2p' ~/bin/easyTests/config)
+check_notifications_show=$(sed -n '3p' ~/bin/easyTests/config)
+
+auto_close_image="♻"
+auto_close_image="🌀"
+auto_close_image="🔜"
+auto_close_image="🔄"
+
+notifications_show_image="🛎"
 
 check_current_test(){
 	filename=~/bin/easyTests/currentTest
@@ -47,22 +57,39 @@ logo="
 \t<span color=\"#389493\">        ██        █████      ███████        ██</span>
 \t<span color=\"#3fa6a5\">        ██        ██                          ██        ██</span>
 \t<span color=\"#45b5b4\">        ██        ██                          ██        ██</span>
-\t<span color=\"#4cc7c6\">        ██        ███████ ███████        ██</span>\n
+\t<span color=\"#4cc7c6\">        ██        ███████ ███████        ██</span>
 "
 
-# General functions
+check_auto_close_icon(){
+	if [ "$check_auto_close" = "auto-close: true" ];then
+		auto_close_icon="$auto_close_image"
+	else
+		auto_close_icon=""
+	fi
+}
+
+check_notifications_show_icon(){
+	if [ "$check_notifications_show" = "notifications-show: true" ];then
+		notifications_show_icon="$notifications_show_image"
+	else
+		notifications_show_icon=""
+	fi
+}
 
 header_general(){
+	check_auto_close_icon
+	check_notifications_show_icon
 	choosen_test_short=${choosen_test:: -6}
-	choosen_test_short=`echo "$choosen_test_short" | sed -r 's/_/ /g' | fold -b$((30)) -s`
-	COLUMNS=40
-	choosen_test_short=`echo "$choosen_test_short" | sed -r 's/_/ /g' | fold -s -w $(( $COLUMNS - 4 )) | sed -e '2,$s/^/\t\t\t  /g'`
-	
-	HEADER="$logo
-\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"#3fa6a5\"><big><b><i> $choosen_test_short</i></b></big></span>
+	choosen_test_short=`echo "$choosen_test_short"  | cut -c5-| sed -r 's/_/ /g' | fold -b$((30)) -s`
+	choosen_test_short=`echo "$choosen_test_short"| sed -r 's/_/ /g' `
+	choosen_test_number=${choosen_test:0:3}
+	COLUMNS=30
+	choosen_test_text=`echo "$choosen_test_short" | fold -s -w $(( $COLUMNS - 4 )) | sed -e '2,$s/^/\t\t\t  /g'`
+	HEADER="$logo\n\n
+\t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"grey\"><big><b><i> $choosen_test_number</i></b></big></span> <span color=\"#3fa6a5\"><big><b><i> $choosen_test_text</i></b></big></span>\n
 \t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> $type_test</i></b></span>
-\t\t\t\t\t\t\t\t\t\t<span color=\"grey\">$check_auto_close</span>
-"
+\t\t\t\t\t\t\t\t\t\t       $auto_close_icon
+\t\t\t\t\t\t\t       $notifications_show_icon"
 }
 
 _quit(){
@@ -111,15 +138,34 @@ run_test(){
 	fi
 }
 
-auto_close(){
-	if [ "$check_auto_close" = "auto-close" ]; then
-		echo "" > ~/bin/easyTests/config
-		check_auto_close=$(cat ~/bin/easyTests/config)
+toggle_auto_close(){
+	if [ "$check_auto_close" = "auto-close: true" ]; then
+		sed -i '2s/.*/auto-close: false/' ~/bin/easyTests/config
+		check_auto_close=$(sed -n '2p' ~/bin/easyTests/config)
+		auto_close_icon=""
 	else
-		echo "auto-close" > ~/bin/easyTests/config
-		check_auto_close=$(cat ~/bin/easyTests/config)
+		sed -i '2s/.*/auto-close: true/' ~/bin/easyTests/config
+		check_auto_close=$(sed -n '2p' ~/bin/easyTests/config)
+		auto_close_icon="$auto_close_image"	
 	fi
 }
+
+toggle_notifications_show(){
+	if [ "$check_notifications_show" = "notifications-show: true" ]; then
+		sed -i '3s/.*/notifications-show: false/' ~/bin/easyTests/config
+		check_notifications_show=$(sed -n '3p' ~/bin/easyTests/config)
+		notifications_show_icon=""
+	else
+		sed -i '3s/.*/notifications-show: true/' ~/bin/easyTests/config
+		check_notifications_show=$(sed -n '3p' ~/bin/easyTests/config)
+		notifications_show_icon="$notifications_show_image"	
+	fi
+}
+# toggle_notifications_show(){
+
+# }
+
+# General functions
 
 test_alias(){
 	if [ -e ~/bin/easytests/config/currentCommits/$HASH_COMMIT/isCommitPending ]; then
@@ -150,10 +196,12 @@ test_alias(){
 				type_test="Sans affichage No Init"
 			fi
 			choosen_test="$titre.robot"
-			echo -e "\nAlias défini pour :\n\n$titre\n$type_test"
-			notification "$titre\n$type_test"
+			echo -e "\nAlias défini pour :\n\n$titre\n$type_test\n"
+			if [ "$check_notifications_show" = "notifications-show: true" ]; then
+				notification "$titre\n$type_test"
+			fi
 			unset titre
-			if [ "$check_auto_close" = "auto-close" ]; then
+			if [ "$check_auto_close" = "auto-close: true" ]; then
 				_quit
 			fi
 		else
@@ -167,7 +215,7 @@ test_alias(){
 
 frm_tests(){
 	header_general
-	zenity --list --width=400 --height=540 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
+	zenity --list --width=400 --height=580 --text='<span font-family=\"Arial\">'"$HEADER"'</span>' \
     	--title="Tests" \
     	--ok-label="✅" \
     	--cancel-label="❎" \
@@ -178,7 +226,8 @@ frm_tests(){
     	4 "  4" "		    $BN" "	    " "📑" \
     	0 "" "" "" "" \
     	5 "  5" "				   $RT" "		    " "🔬" \
-    	6 "  6" "		    	        $AC" "	    " "❎" 2>/dev/null;
+    	6 "  6" "		    	        $AC" "	    " "$auto_close_image" \
+    	7 "  7" "		    	           $NO" "	    " "$notifications_show_image" 2>/dev/null;
 }
 
 frm_tests_parser(){
@@ -188,7 +237,8 @@ frm_tests_parser(){
 		3) test_alias "TN" ;;
 		4) test_alias "BN" ;;
 		5) run_test ;;
-		6) auto_close ;;
+		6) toggle_auto_close ;;
+		7) toggle_notifications_show ;;
         *)
            quit="1"
            _quit ;;
