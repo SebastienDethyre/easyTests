@@ -24,7 +24,7 @@ auto_close_image="🌀"
 auto_close_image="🔜"
 auto_close_image="🔄"
 
-notifications_show_image="🛎"
+notifications_show_image="🔔"
 
 check_current_test(){
 	filename=~/bin/easyTests/currentTest
@@ -89,7 +89,7 @@ header_general(){
 \t<big>🧪</big>\t<span color=\"grey\">Nom :</span><span color=\"grey\"><big><b><i> $choosen_test_number</i></b></big></span> <span color=\"#3fa6a5\"><big><b><i> $choosen_test_text</i></b></big></span>\n
 \t<big></big>\t<span color=\"grey\">Type :</span><span color=\"#45b5b4\"><b><i> $type_test</i></b></span>
 \t\t\t\t\t\t\t\t\t\t       $auto_close_icon
-\t\t\t\t\t\t\t       $notifications_show_icon"
+\t\t\t\t\t\t\t\t\t\t       $notifications_show_icon"
 }
 
 _quit(){
