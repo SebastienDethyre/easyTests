@@ -4,10 +4,10 @@
 
 # Variables
 
-T="Test"
-B="Test sans affichage"
-TN="Test No Init"
-BN="Test No Init sans affichage"
+T="Simple"
+B="Sans affichage"
+TN="No Init"
+BN="No Init sans affichage"
 
 RT="Lancer le test"
 AC="Fermeture Auto"
@@ -220,14 +220,14 @@ frm_tests(){
     	--ok-label="✅" \
     	--cancel-label="❎" \
     	--hide-column 1 --column "" --column "" --column "" --column "" --column "" \
-    	1 "  1" "				             $T" "	       " "📺" \
-    	2 "  2" "		   	     $B" "	       " "📻" \
-    	3 "  3" "				     $TN" "		    " "🗃" \
-    	4 "  4" "		    $BN" "	    " "📑" \
+    	1 "  1" "				            $T" "	       " "📺" \
+    	2 "  2" "		   	            $B" "	       " "📻" \
+    	3 "  3" "				            $TN" "		    " "🗃" \
+    	4 "  4" "		           $BN" "	    " "📑" \
     	0 "" "" "" "" \
-    	5 "  5" "				   $RT" "		    " "🔬" \
-    	6 "  6" "		    	        $AC" "	    " "$auto_close_image" \
-    	7 "  7" "		    	           $NO" "	    " "$notifications_show_image" 2>/dev/null;
+    	5 "  5" "				     $RT" "		    " "🔬" \
+    	6 "  6" "		    	          $AC" "	    " "$auto_close_image" \
+    	7 "  7" "		    	             $NO" "	    " "$notifications_show_image" 2>/dev/null;
 }
 
 frm_tests_parser(){
